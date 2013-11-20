@@ -23,13 +23,6 @@
         expect(holder.bike_count).to eq(0)
       end
 
-      it "should release a bike, if not empty" do
-        holder.dock(bike)
-        expect(holder.bike_count).to eq(1)
-        holder.release(bike)
-        expect(holder.bike_count).to eq(0)
-      end
-
       it "should know when it's full" do
         expect(holder).not_to be_full
         fill_holder(holder)

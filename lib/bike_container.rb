@@ -23,9 +23,9 @@
         bikes << bike if bike.respond_to? :break
       end
 
-      def release(bike)
-        bikes.delete(bike)
-      end
+      # def release(bike)
+      #   bikes.delete(bike)
+      # end
 
       def full?
         bike_count == capacity
