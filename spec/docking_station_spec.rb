@@ -1,11 +1,11 @@
-    require 'docking_station'
+require 'docking_station'
 
-    describe DockingStation do
+describe DockingStation do
 
-    let(:station) { DockingStation.new(:capacity => 123) }
+let(:station) { DockingStation.new(capacity: 12) }
 
-      it "should allow setting default capacity on initialising" do
-        expect(station.capacity).to eq(123)
-      end
+  it "should allow setting default capacity on initialising" do
+    expect(station.capacity).to eq(12)
+  end
 
-    end # of describe
+end # of describe
