@@ -17,8 +17,15 @@
         expect(holder.bike_count).to eq(1)
       end
 
-      it "should release a bike" do
+      it "should not accept something that is can't be broken" do
+        expect(holder.bike_count).to eq(0)
+        holder.dock("Not a Bike")
+        expect(holder.bike_count).to eq(0)
+      end
+
+      it "should release a bike, if not empty" do
         holder.dock(bike)
+        expect(holder.bike_count).to eq(1)
         holder.release(bike)
         expect(holder.bike_count).to eq(0)
       end
