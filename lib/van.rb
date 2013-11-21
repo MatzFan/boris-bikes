@@ -24,6 +24,9 @@ class Van
     @location = new_location
     if location.respond_to? :fix_all
       release_all(self.broken_bikes)
+    elsif location.is_a? DockingStation
+      broken_ones = location.broken_bikes
+      self.dock_all(broken_ones)
     end
   end
 

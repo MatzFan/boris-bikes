@@ -35,14 +35,22 @@ let(:bike) { Bike.new }
     expect(station.bike_count).to eq(1)
   end
 
+  it "should pick up all broken bikes at a docking station" do
+    working_bike, broken_bike1, broken_bike2 = Bike.new, Bike.new, Bike.new
+    broken_bike1.break; broken_bike2.break
+    station.dock_all([working_bike, broken_bike1, broken_bike2])
+    expect(station.broken_bikes).to eq([broken_bike1, broken_bike2])
+    expect(station.bike_count).to eq(3)
+    van.go_to(station)
+    expect(van.location.is_a? DockingStation).to be_true
+    expect(van.bike_count).to eq(2)
+  end
+
   it "should release all it's broken bikes at a place that fixes them" do
     working_bike, broken_bike1, broken_bike2 = Bike.new, Bike.new, Bike.new
     broken_bike1.break; broken_bike2.break
     van.dock_all([working_bike, broken_bike1, broken_bike2])
-    expect(van.broken_bikes).to eq([broken_bike1, broken_bike2])
     expect(van.bike_count).to eq(3)
-    expect(garage.capacity).to eq(10)
-    # expect(van.location).to respond_to :fix_all
     van.go_to(garage)
     expect(van.bike_count).to eq(1)
   end
