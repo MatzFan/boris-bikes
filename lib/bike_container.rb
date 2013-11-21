@@ -19,7 +19,6 @@
       end
 
       def dock(bike)
-        # raise "Station is full" if full?
         if !full?
           bikes << bike if bike.respond_to? :break
         end
@@ -27,6 +26,14 @@
 
       def dock_all(bikes)
         bikes.each { |bike| dock(bike) }
+      end
+
+      def release(bike)
+        bikes.delete(bike) if !empty?
+      end
+
+      def release_all(bikes)
+        bikes.each { |bike| release(bike) }
       end
 
       def full?

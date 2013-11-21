@@ -47,6 +47,12 @@
         expect(holder.bike_count).to eq(holder.capacity)
       end
 
+      it "should not be able to release a bike if empty" do
+        expect(nil).to be_nil
+        expect(holder).to be_empty
+        expect(holder.release(bike)).to be_nil
+      end
+
       it "should provide the list of available bikes" do
         working_bike, broken_bike = Bike.new, Bike.new
         broken_bike.break
