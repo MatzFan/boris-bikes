@@ -36,6 +36,10 @@
         expect(holder).to be_full
       end
 
+      it "should know when it's empty" do
+        expect(holder).to be_empty
+      end
+
       it "should not accept a bike if it's full" do
         fill_holder(holder)
         expect(lambda { holder.dock(bike) }).to raise_error(RuntimeError)

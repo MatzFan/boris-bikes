@@ -11,8 +11,10 @@ class Van
   end
 
   def release(bike)
-    location.dock(bike)
-    bikes.delete(bike)
+    if !empty?
+      location.dock(bike)
+      bikes.delete(bike)
+    end
   end
 
   def release_all(bikes)
@@ -22,11 +24,16 @@ class Van
   def go_to(new_location)
     raise "Can't go to #{new_location}" if !(new_location.respond_to? :bike_count)
     @location = new_location
+    process_bikes
+  end
+
+  private
+  def process_bikes
     if location.respond_to? :fix_all
-      release_all(self.broken_bikes)
+      release_all(broken_bikes)
     elsif location.is_a? DockingStation
-      broken_ones = location.broken_bikes
-      self.dock_all(broken_ones)
+      release_all(available_bikes)
+      dock_all(location.broken_bikes)
     end
   end
 

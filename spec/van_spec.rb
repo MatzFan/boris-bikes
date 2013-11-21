@@ -27,12 +27,19 @@ let(:bike) { Bike.new }
 
   it "should be able to release a bike at a location and that bike then be at the location" do
     van.dock(bike)
-    van.go_to(station)
     expect(van.bike_count).to eq(1)
     expect(station.bike_count).to eq(0)
+    van.go_to(station)
+    expect(station.bike_count).to eq(1)
     van.release(bike)
     expect(van.bike_count).to eq(0)
     expect(station.bike_count).to eq(1)
+  end
+
+  it "should not be able to release a bike if van is empty" do
+    expect(van.bike_count).to eq(0)
+    van.go_to(station)
+    expect(van.bike_count).to eq(0)
   end
 
   it "should pick up all broken bikes at a docking station" do
@@ -42,7 +49,6 @@ let(:bike) { Bike.new }
     expect(station.broken_bikes).to eq([broken_bike1, broken_bike2])
     expect(station.bike_count).to eq(3)
     van.go_to(station)
-    expect(van.location.is_a? DockingStation).to be_true
     expect(van.bike_count).to eq(2)
   end
 
@@ -52,6 +58,17 @@ let(:bike) { Bike.new }
     van.dock_all([working_bike, broken_bike1, broken_bike2])
     expect(van.bike_count).to eq(3)
     van.go_to(garage)
+    expect(van.bike_count).to eq(1)
+  end
+
+  it "should fill a docking station with fixed bikes" do
+    working_bike1, working_bike2, broken_bike = Bike.new, Bike.new, Bike.new
+    broken_bike.break
+    van.dock_all([working_bike1, working_bike2, broken_bike])
+    expect(van.available_bikes).to eq([working_bike1, working_bike2])
+    expect(station.bike_count).to eq(0)
+    van.go_to(station)
+    expect(station.bike_count).to eq(2)
     expect(van.bike_count).to eq(1)
   end
 
