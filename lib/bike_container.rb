@@ -25,11 +25,7 @@
       end
 
       def dock_all(bikes)
-        puts bikes.inspect
-        bikes.each do |bike|
-          puts bike
-          dock(bike)
-        end
+        bikes.each { |bike| dock(bike) }
       end
 
       def release_a_working_bike
