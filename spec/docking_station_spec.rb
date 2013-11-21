@@ -8,8 +8,4 @@ let(:station) { DockingStation.new(capacity: 12) }
     expect(station.capacity).to eq(12)
   end
 
-  it "should know when it's empty" do
-    expect(DockingStation.new).to be_empty
-  end
-
 end # of describe

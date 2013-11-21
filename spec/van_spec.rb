@@ -1,4 +1,8 @@
 require 'van'
+require 'bike'
+require 'docking_station'
+require 'garage'
+
 
 describe Van do
 
@@ -34,22 +38,6 @@ let(:bike) { Bike.new }
     expect(lambda { van.go_to("Moon") }).to raise_error(RuntimeError)
   end
 
-  it "should be able to release a bike at a location and that bike then be at the location" do
-    van.dock(bike)
-    expect(van.bike_count).to eq(1)
-    expect(station.bike_count).to eq(0)
-    van.go_to(station)
-    van.release(bike)
-    expect(van.bike_count).to eq(0)
-    expect(station.bike_count).to eq(1)
-  end
-
-  it "should not be able to release a bike if van is empty" do
-    expect(van.bike_count).to eq(0)
-    van.go_to(station)
-    expect(van.bike_count).to eq(0)
-  end
-
   it "should pick up all broken bikes at a docking station" do
     working_bike, broken_bike1, broken_bike2 = Bike.new, Bike.new, Bike.new
     broken_bike1.break; broken_bike2.break
@@ -75,10 +63,16 @@ let(:bike) { Bike.new }
     van.dock_all([working_bike1, working_bike2, broken_bike])
     expect(van.available_bikes).to eq([working_bike1, working_bike2])
     expect(station.bike_count).to eq(0)
+    expect(van.bike_count).to eq(3)
     van.go_to(station)
-    expect(station.bike_count).to eq(2)
+    expect(van.location).to eq(station)
     expect(van.bike_count).to eq(1)
+    expect(station.bike_count).to eq(2)
   end
+
+
+
+
 
   it "should be full after visiting a docking station with lots of broken bikes" do
     station.dock_all(twenty_broken_bikes)

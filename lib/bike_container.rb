@@ -25,15 +25,27 @@
       end
 
       def dock_all(bikes)
-        bikes.each { |bike| dock(bike) }
+        puts bikes.inspect
+        bikes.each do |bike|
+          puts bike
+          dock(bike)
+        end
       end
 
-      def release(bike)
-        bikes.delete(bike) if !empty?
+      def release_a_working_bike
+        bikes.delete(available_bikes.pop) if available_bikes.count > 0
       end
 
-      def release_all(bikes)
-        bikes.each { |bike| release(bike) }
+      def release_a_broken_bike
+        bikes.delete(broken_bikes.pop) if broken_bikes.count > 0
+      end
+
+      def release_all_working_bikes
+        available_bikes.map { |bike| release_a_working_bike }
+      end
+
+      def release_all_broken_bikes
+        broken_bikes.map { |bike| release_a_broken_bike }
       end
 
       def full?
