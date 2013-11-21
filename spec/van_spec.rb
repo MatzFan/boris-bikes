@@ -2,10 +2,19 @@ require 'van'
 
 describe Van do
 
-let(:station) { DockingStation.new(capacity: 12) }
+let(:station) { DockingStation.new(capacity: 20) }
 let(:van) { Van.new(capacity: 15) }
 let(:garage) { Garage.new }
 let(:bike) { Bike.new }
+
+  def twenty_available_bikes
+    20.times.inject([]) { |bikes, n| bikes << Bike.new }
+  end
+
+  def twenty_broken_bikes
+    twenty_available_bikes.each { |bike| bike.break }
+  end
+
 
   it "should allow setting default capacity on initialising" do
     expect(van.capacity).to eq(15)
@@ -30,7 +39,6 @@ let(:bike) { Bike.new }
     expect(van.bike_count).to eq(1)
     expect(station.bike_count).to eq(0)
     van.go_to(station)
-    expect(station.bike_count).to eq(1)
     van.release(bike)
     expect(van.bike_count).to eq(0)
     expect(station.bike_count).to eq(1)
@@ -70,6 +78,14 @@ let(:bike) { Bike.new }
     van.go_to(station)
     expect(station.bike_count).to eq(2)
     expect(van.bike_count).to eq(1)
+  end
+
+  it "should be full after visiting a docking station with lots of broken bikes" do
+    station.dock_all(twenty_broken_bikes)
+    expect(station.broken_bikes.count).to eq(20)
+    van.go_to(station)
+    expect(van.capacity).to eq(15)
+    expect(van.bike_count).to eq(15)
   end
 
 end # of describe

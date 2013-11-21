@@ -19,8 +19,10 @@
       end
 
       def dock(bike)
-        raise "Station is full" if full?
-        bikes << bike if bike.respond_to? :break
+        # raise "Station is full" if full?
+        if !full?
+          bikes << bike if bike.respond_to? :break
+        end
       end
 
       def dock_all(bikes)

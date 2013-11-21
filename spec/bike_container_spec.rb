@@ -42,7 +42,9 @@
 
       it "should not accept a bike if it's full" do
         fill_holder(holder)
-        expect(lambda { holder.dock(bike) }).to raise_error(RuntimeError)
+        expect(holder).to be_full
+        holder.dock(bike)
+        expect(holder.bike_count).to eq(holder.capacity)
       end
 
       it "should provide the list of available bikes" do
