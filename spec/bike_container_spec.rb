@@ -5,6 +5,7 @@
     describe BikeContainer do
 
       let(:bike) { Bike.new }
+      let(:bikes) {[Bike.new, Bike.new]}
       let(:holder) { ContainerHolder.new }
 
       def fill_holder(container)
@@ -15,6 +16,12 @@
         expect(holder.bike_count).to eq(0)
         holder.dock(bike)
         expect(holder.bike_count).to eq(1)
+      end
+
+      it "should accept multiple bikes" do
+        expect(holder.bike_count).to eq(0)
+        holder.dock_all(bikes)
+        expect(holder.bike_count).to eq(2)
       end
 
       it "should not accept something that is can't be broken" do

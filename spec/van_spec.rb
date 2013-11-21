@@ -12,11 +12,13 @@ let(:bike) { Bike.new }
   end
 
   it "should be able to go to a docking station" do
-    expect(van.go_to(station)).not_to be(nil)
+    van.go_to(station)
+    expect(van.location).to be(station)
   end
 
   it "should be able to go to a garage" do
-    expect(van.go_to(garage)).not_to be(nil)
+    van.go_to(garage)
+    expect(van.location).to be(garage)
   end
 
   it "should not be able to go to somewhere that doesn't handle bikes" do
@@ -31,6 +33,18 @@ let(:bike) { Bike.new }
     van.release(bike)
     expect(van.bike_count).to eq(0)
     expect(station.bike_count).to eq(1)
+  end
+
+  it "should release all it's broken bikes at a place that fixes them" do
+    working_bike, broken_bike1, broken_bike2 = Bike.new, Bike.new, Bike.new
+    broken_bike1.break; broken_bike2.break
+    van.dock_all([working_bike, broken_bike1, broken_bike2])
+    expect(van.broken_bikes).to eq([broken_bike1, broken_bike2])
+    expect(van.bike_count).to eq(3)
+    expect(garage.capacity).to eq(10)
+    # expect(van.location).to respond_to :fix_all
+    van.go_to(garage)
+    expect(van.bike_count).to eq(1)
   end
 
 end # of describe
