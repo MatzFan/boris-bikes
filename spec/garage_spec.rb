@@ -2,11 +2,11 @@ require 'garage'
 
 describe Garage do
 
-  let(:garage) { Garage.new(capacity: 123) }
+  let(:garage) { Garage.new }
   let(:bike) { Bike.new }
 
   it "should allow setting default capacity on initialising" do
-    expect(garage.capacity).to eq(123)
+    expect(garage.capacity).to eq(100)
   end
 
   it "should fix broken bikes" do

@@ -2,12 +2,15 @@ class Garage
 
   require_relative 'bike_container'
 
-  DEFAULT_CAPACITY = 100
-
   include BikeContainer
 
-  def initialize(options = {})
-    self.capacity = options.fetch(:capacity, capacity)
+  def initialize(args = {})
+    args = defaults.merge(args)
+    @capacity = args[:capacity]
+  end
+
+  def defaults
+    {capacity: 100}
   end
 
   def fix_all(bikes)

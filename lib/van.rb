@@ -6,8 +6,14 @@ class Van
 
   attr_reader :location
 
-  def initialize(options = {})
-    self.capacity = options.fetch(:capacity, capacity)
+  def initialize(args = {})
+    args = defaults.merge(args)
+    @capacity = args[:capacity]
+    # self.capacity = options.fetch(:capacity, capacity)
+  end
+
+  def defaults
+    {capacity: 20}
   end
 
   def go_to(new_location)

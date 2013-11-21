@@ -8,7 +8,7 @@ describe Van do
 
 let(:station) { DockingStation.new(capacity: 20) }
 let(:van) { Van.new(capacity: 15) }
-let(:garage) { Garage.new }
+let(:garage) { Garage.new({capacity: 100}) }
 let(:bike) { Bike.new }
 
   def twenty_available_bikes
@@ -69,10 +69,6 @@ let(:bike) { Bike.new }
     expect(van.bike_count).to eq(1)
     expect(station.bike_count).to eq(2)
   end
-
-
-
-
 
   it "should be full after visiting a docking station with lots of broken bikes" do
     station.dock_all(twenty_broken_bikes)

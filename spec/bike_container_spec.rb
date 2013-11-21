@@ -9,7 +9,7 @@
       let(:holder) { ContainerHolder.new }
 
       def fill_holder(container)
-        10.times { container.dock(Bike.new) }
+        container.capacity.times { container.dock(Bike.new) }
       end
 
       it "should accept a bike" do
