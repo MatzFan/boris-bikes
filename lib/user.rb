@@ -18,21 +18,20 @@ class User
   end
 
   def try_to_dock_bike
-    @location.dock(bike)
-    # @location.full? ? go_to_another_station : @location.dock(bike)
+    @location.full? ? go_elsewhere : @location.dock(bike); bike = nil
   end
 
   def try_to_pick_up_bike
-    @bike = location.release_a_working_bike
-    # @location.empty? ? @bike = location.release_a_working_bike : go_to_another_station
+    @location.empty? ? go_elsewhere : @bike = @location.release_a_working_bike
   end
 
-  # def go_to_another_station
-  #   @location = $stations[rand($stations.count)]
-  # end
+  # sends user to a random docking station
+  def go_elsewhere
+    @location = $stations[rand($stations.count)]
+  end
 
   def has_bike?
-    @bike
+    bike
   end
 
 end # end of describe

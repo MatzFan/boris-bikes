@@ -2,10 +2,7 @@ require 'user'
 
 describe User do
 
-  let(:station) { DockingStation.new(capacity: 20) }
-  let(:all_stations) { [DockingStation.new(name: 'Bank'),
-                        DockingStation.new(name: 'Old Street'),
-                        DockingStation.new(name: 'Monument')] }
+  let(:station) { DockingStation.new(capacity: 20, name: 'Bank') }
   let(:user) { User.new }
   let(:bike) { Bike.new }
   let(:user_with_bike) { station.dock(bike); user.go_to(station); user }
@@ -25,8 +22,8 @@ describe User do
     expect(user.bike).to be_nil
     expect(station.available_bikes.count).to eq(1)
     user.go_to(station)
-    expect(user.bike).to eq(bike)
     expect(station.bike_count).to eq(0)
+    expect(user.bike).to eq(bike)
   end
 
   it "should not be able to take a bike, if a station has none" do
@@ -65,7 +62,7 @@ describe User do
     expect(user.bike).to eq (bike)
   end
 
-  xit "with a bike should go to another station if a station is full" do
+  it "with a bike should go to another station if a station is full" do
     station.dock(bike)
     user.go_to(station)
     fill(station)
@@ -73,7 +70,7 @@ describe User do
     expect(user.location).not_to eq (station)
   end
 
-  xit "without a bike should go to another station if a station is empty" do
+  it "without a bike should go to another station if a station is empty" do
     station.dock(bike)
     user.go_to(station)
     fill(station)
