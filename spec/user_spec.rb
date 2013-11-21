@@ -26,7 +26,7 @@ describe User do
     expect(user.bike).to eq(bike)
   end
 
-  it "should not be able to take a bike, if a station has none" do
+  it "should not be able to take a bike, if a station has no working bikes" do
     bike.break
     station.dock(bike)
     expect(station.bike_count).to eq(1)

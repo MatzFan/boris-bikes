@@ -22,7 +22,7 @@ class User
   end
 
   def try_to_pick_up_bike
-    @location.empty? ? go_elsewhere : @bike = @location.release_a_working_bike
+    @location.available_bikes.nil? ? go_elsewhere : @bike = @location.release_a_working_bike
   end
 
   # sends user to a random docking station
