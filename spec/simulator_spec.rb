@@ -15,17 +15,28 @@ describe Simulator do
     end
 
     it "should create a simulation with a 5 docking stations" do
-      expect(sim.docking_stations.count).to eq(5)
+      expect($docking_stations.count).to eq(5)
     end
 
     it "should create a simulation with a each docking station half full" do
-      sim.docking_stations.each do |station|
+      $docking_stations.each do |station|
         expect(station.available_bikes.count).to eq(station.capacity/2)
       end
     end
 
-    it "should create 50 users" do
+    it "should put the van at the garage" do
+      sim.start(2)
+      expect(sim.van.location).to eq(sim.garage)
+    end
+
+    it "should have 50 users" do
       expect(sim.users.count).to eq(50)
+    end
+
+    it "should initially allocate each user to a station" do
+     sim.users.each do |user|
+       expect(user.location).to be_nil
+     end
     end
 
   context "running the simulation"
@@ -34,7 +45,16 @@ describe Simulator do
     end
 
     it "should be able to be started" do
-      expect(sim.start).to be_true
+      expect(sim.start(2)).to be_true
+    end
+
+    it "should have a step which breaks 10% of bikes" do
+      sim.step
+      broken_ones = 0
+      sim.bikes.each do |bike|
+        broken_ones += 1 if bike.broken?
+      end
+      broken_ones.should be >= 1
     end
 
 end # of describe

@@ -25,9 +25,8 @@ class User
     @location.available_bikes.nil? ? go_elsewhere : @bike = @location.release_a_working_bike
   end
 
-  # sends user to a random docking station
   def go_elsewhere
-    @location = STATIONS[rand(STATIONS.count)]
+    go_to($docking_stations[rand($docking_stations.count)])
   end
 
   def has_bike?
