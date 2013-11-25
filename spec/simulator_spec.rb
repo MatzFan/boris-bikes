@@ -28,9 +28,13 @@ describe Simulator do
       expect(sim.users.count).to eq(50)
     end
 
-  context "viewing the simulation"
+  context "running the simulation"
     it "should display something" do
       expect(sim.display).to_not eq(RuntimeError)
+    end
+
+    it "should be able to be started" do
+      expect(sim.start).to be_true
     end
 
 end # of describe

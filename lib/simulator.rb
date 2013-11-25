@@ -23,9 +23,11 @@ class Simulator
     @users = users = []; 50.times { users << User.new}
   end
 
-
-
-
+  def start
+    2.times do
+      display
+    end
+  end
 
   def create_docking_stations
     @docking_stations = []
@@ -49,6 +51,7 @@ class Simulator
               available: station.available_bikes.count,
               broken: station.broken_bikes.count})
     end
+    puts
   end
 
   def format(args)
