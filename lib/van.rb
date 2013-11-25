@@ -9,7 +9,6 @@ class Van
   def initialize(args = {})
     args = defaults.merge(args)
     @capacity = args[:capacity]
-    # self.capacity = options.fetch(:capacity, capacity)
   end
 
   def defaults

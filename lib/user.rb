@@ -1,6 +1,6 @@
 class User
 
-  $stations = [DockingStation.new(name: 'Bank'),
+  STATIONS = [DockingStation.new(name: 'Bank'),
                DockingStation.new(name: 'Old Street'),
                DockingStation.new(name: 'Monument')]
 
@@ -27,7 +27,7 @@ class User
 
   # sends user to a random docking station
   def go_elsewhere
-    @location = $stations[rand($stations.count)]
+    @location = STATIONS[rand(STATIONS.count)]
   end
 
   def has_bike?
