@@ -1,9 +1,5 @@
 class User
 
-  STATIONS = [DockingStation.new(name: 'Bank'),
-               DockingStation.new(name: 'Old Street'),
-               DockingStation.new(name: 'Monument')]
-
   attr_accessor :location, :bike
 
   def initialize
@@ -18,15 +14,14 @@ class User
   end
 
   def try_to_dock_bike
-    @location.full? ? go_elsewhere : @location.dock(bike); bike = nil
+    unless @location.full?
+      @location.dock(bike)
+      bike = nil
+    end
   end
 
   def try_to_pick_up_bike
-    @location.available_bikes.nil? ? go_elsewhere : @bike = @location.release_a_working_bike
-  end
-
-  def go_elsewhere
-    go_to($docking_stations[rand($docking_stations.count)])
+    @bike = @location.release_a_working_bike unless @location.available_bikes.nil?
   end
 
   def has_bike?

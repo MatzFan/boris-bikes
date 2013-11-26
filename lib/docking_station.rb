@@ -1,12 +1,12 @@
+require_relative 'bike_container'
+
 class DockingStation
+
+  include BikeContainer
 
   DEFAULT_NAME = 'Unknown'
 
-  # require_relative 'bike_container'
-
   attr_accessor :name
-
-  include BikeContainer
 
   def initialize(args = {})
     args = defaults.merge(args)

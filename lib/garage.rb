@@ -1,6 +1,6 @@
-class Garage
+require_relative 'bike_container'
 
-  require_relative 'bike_container'
+class Garage
 
   include BikeContainer
 

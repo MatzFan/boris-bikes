@@ -62,20 +62,4 @@ describe User do
     expect(user.bike).to eq (bike)
   end
 
-  it "with a bike should go to another station if a station is full" do
-    station.dock(bike)
-    user.go_to(station)
-    fill(station)
-    user.go_to(station)
-    expect(user.location).not_to eq (station)
-  end
-
-  it "without a bike should go to another station if a station is empty" do
-    station.dock(bike)
-    user.go_to(station)
-    fill(station)
-    user.go_to(station)
-    expect(user.location).not_to eq (station)
-  end
-
 end # of describe

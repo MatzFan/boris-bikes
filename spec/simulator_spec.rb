@@ -2,8 +2,12 @@ require 'simulator'
 
 describe Simulator do
 
-  let(:output) {double('output') }
-  let(:sim) {Simulator.new(output)}
+    let(:output) { double('output') }
+    let(:sim) { Simulator.new(output) }
+
+  def all_broken_bikes
+    sim.bikes.select { |bike| bike.broken? }
+  end
 
   context "sets up a simulation"
     it "should create a simulation with a garage" do
@@ -25,7 +29,6 @@ describe Simulator do
     end
 
     it "should put the van at the garage" do
-      sim.start(2)
       expect(sim.van.location).to eq(sim.garage)
     end
 
@@ -45,16 +48,31 @@ describe Simulator do
     end
 
     it "should be able to be started" do
-      expect(sim.start(2)).to be_true
+      expect(sim.start(1)).to be_true
     end
 
-    it "should have a step which breaks 10% of bikes" do
+    it "should have a step which breaks some of bikes" do
       sim.step
-      broken_ones = 0
-      sim.bikes.each do |bike|
-        broken_ones += 1 if bike.broken?
-      end
-      broken_ones.should be >= 1
+      all_broken_bikes.count.should be >= 1
+    end
+
+    it "should have a step which sends users to random docking stations" do
+      sim.start(1)
+      old_user_locations = sim.users.map { |user| user.location.name }
+      sim.step
+      sim.step
+      new_user_locations = sim.users.map { |user| user.location.name }
+      expect(old_user_locations).to_not eq(new_user_locations)
+    end
+
+    it "should have a step which fixes some broken bikes" do
+      sim.step
+      sim.step
+      old_broken_ones = all_broken_bikes
+      sim.step
+      sim.step
+      now_fixed = old_broken_ones.select { |bike| !bike.broken? }
+      expect(now_fixed).to_not be_empty
     end
 
 end # of describe

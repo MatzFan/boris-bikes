@@ -57,6 +57,13 @@ let(:bike) { Bike.new }
     expect(van.bike_count).to eq(1)
   end
 
+  it "should be full of fixed bikes after visiting a place that fixes them" do
+    50.times { garage.dock(Bike.new) }
+    van.dock(twenty_broken_bikes)
+    van.go_to(garage)
+    expect(van.available_bikes.count).to eq(15)
+  end
+
   it "should fill a docking station with fixed bikes" do
     working_bike1, working_bike2, broken_bike = Bike.new, Bike.new, Bike.new
     broken_bike.break

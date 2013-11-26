@@ -1,6 +1,6 @@
-class Van
+require_relative 'bike_container'
 
-  require_relative 'bike_container'
+class Van
 
   include BikeContainer
 
