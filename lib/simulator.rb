@@ -25,11 +25,7 @@ class Simulator
     @van.go_to @garage
     half_fill_stations
     @users = []
-    docking_stations.each do |station|
-      10.times do
-        @users << User.new
-      end
-    end
+    docking_stations.each { 10.times { @users << User.new } }
   end
 
   def create_docking_stations
@@ -40,16 +36,16 @@ class Simulator
   end
 
   def step
-    @bikes.each { |bike| bike.break if rand(20) == 0 }
-    users.each do |user|
-      user.go_to(another_station(user.location))
+    loop do
+      puts "Another step?"
+      break if gets.chomp != 'y'
+      @bikes.each { |bike| bike.break if rand(10) == 0 }
+      users.each do |user|
+        user.go_to(another_station(user.location))
+      end
+      display
+      van_fix_bikes
     end
-    display
-    van_fix_bikes
-  end
-
-  def step2
-    van_fix_bikes
   end
 
   def van_fix_bikes
@@ -57,9 +53,6 @@ class Simulator
     van.go_to(previous_location)
     van.go_to garage
     van.go_to(previous_location)
-    puts
-    puts "Van is at #{van.location.name}"
-    puts
   end
 
   def priority_location
@@ -75,7 +68,8 @@ class Simulator
 
   def start(num_steps)
     users.each { |user| user.go_to(another_station) }
-    num_steps.times { step }
+    step
+    # num_steps.times { step }
   end
 
   def half_fill_stations
@@ -135,5 +129,5 @@ class Simulator
 
 end # of class
 
-# sim = Simulator.new(STDOUT)
-# sim.start(10)
+sim = Simulator.new(STDOUT)
+sim.start(10)
