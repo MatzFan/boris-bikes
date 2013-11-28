@@ -7,8 +7,8 @@ require 'garage'
 describe Van do
 
 let(:station) { DockingStation.new(capacity: 20) }
-let(:van) { Van.new(capacity: 15) }
 let(:garage) { Garage.new({capacity: 100}) }
+let(:van) { Van.new(capacity: 15, garage: garage) }
 let(:bike) { Bike.new }
 
   def twenty_available_bikes
@@ -48,13 +48,13 @@ let(:bike) { Bike.new }
     expect(van.bike_count).to eq(2)
   end
 
-  it "should release all it's broken bikes at a place that fixes them" do
+  it "should get its broken bikes fixed at a place that fixes them" do
     working_bike, broken_bike1, broken_bike2 = Bike.new, Bike.new, Bike.new
     broken_bike1.break; broken_bike2.break
     van.dock_all([working_bike, broken_bike1, broken_bike2])
-    expect(van.bike_count).to eq(3)
+    expect(van.broken_bikes.count).to eq(2)
     van.go_to(garage)
-    expect(van.bike_count).to eq(1)
+    expect(van.broken_bikes.count).to eq(0)
   end
 
   it "should be full of fixed bikes after visiting a place that fixes them" do
@@ -83,6 +83,14 @@ let(:bike) { Bike.new }
     van.go_to(station)
     expect(van.capacity).to eq(15)
     expect(van.bike_count).to eq(15)
+  end
+
+  it "should collect a docking station's broken bikes" do
+    station.dock_all(twenty_broken_bikes)
+    expect(station.broken_bikes.count).to eq(20)
+    van.go_to(station)
+    expect(van.bike_count).to eq(15)
+    expect(station.bike_count).to eq(5)
   end
 
 end # of describe

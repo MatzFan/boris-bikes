@@ -9,10 +9,12 @@ class Van
   def initialize(args = {})
     args = defaults.merge(args)
     @capacity = args[:capacity]
+    @garage = args[:garage]
   end
 
   def defaults
     {capacity: 20}
+    {garage: nil}
   end
 
   def go_to(new_location)
@@ -22,15 +24,21 @@ class Van
     process_bikes_at_docking_station if at_a_docking_station?
   end
 
+  def priority_location
+    Stations.all.inject(Stations.all.first) do |memo, station|
+      (station.broken_bikes.count > memo.broken_bikes.count) ? station : memo
+    end
+  end
+
   private
   def process_bikes_at_garage
-    location.dock_all(release_all_broken_bikes)
-    dock_all(location.release_all_working_bikes)
+    location.dock_all(release_broken_bikes(location.bike_spaces))
+    dock_all(location.release_working_bikes(bike_spaces))
   end
 
   def process_bikes_at_docking_station
-    location.dock_all(release_all_working_bikes)
-    dock_all(location.release_all_broken_bikes)
+    location.dock_all(release_working_bikes(location.bike_spaces))
+    dock_all(location.release_broken_bikes(bike_spaces))
   end
 
   def at_a_garage?

@@ -1,4 +1,5 @@
 require 'garage'
+require './lib/bike'
 
 describe Garage do
 
@@ -12,7 +13,6 @@ describe Garage do
   it "should fix broken bikes" do
     bike.break
     garage.dock(bike)
-    garage.fix_all([bike]) # pass array
     expect(bike).not_to be_broken
   end
 

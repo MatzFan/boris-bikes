@@ -2,6 +2,7 @@
 
       DEFAULT_CAPACITY = 10
 
+
       def bikes
         @bikes ||= []
       end
@@ -25,7 +26,7 @@
       end
 
       def dock_all(bikes)
-        bikes.each { |bike| dock(bike) }
+        bikes.each { |bike| dock(bike) if !full? }
       end
 
       def release_a_working_bike
@@ -36,12 +37,22 @@
         bikes.delete(broken_bikes.pop) if broken_bikes.count > 0
       end
 
-      def release_all_working_bikes
-        available_bikes.map { |bike| release_a_working_bike }
+      def release_working_bikes(number)
+        released_bikes = []
+        number.times do
+          released_bikes << release_a_working_bike
+          return released_bikes if available_bikes.empty?
+        end
+        released_bikes
       end
 
-      def release_all_broken_bikes
-        broken_bikes.map { |bike| release_a_broken_bike }
+      def release_broken_bikes(number)
+        released_bikes = []
+        number.times do
+          released_bikes << release_a_broken_bike
+          return released_bikes if broken_bikes.empty?
+        end
+        released_bikes
       end
 
       def full?
@@ -57,7 +68,11 @@
       end
 
       def broken_bikes
-        bikes.reject {|bike| !bike.broken? }
+        bikes.select {|bike| bike.broken? }
+      end
+
+      def bike_spaces
+        capacity - bike_count
       end
 
     end

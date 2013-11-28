@@ -7,6 +7,7 @@
       let(:bike) { Bike.new }
       let(:bikes) {[Bike.new, Bike.new]}
       let(:holder) { ContainerHolder.new }
+      let(:receiver) { ContainerHolder.new }
 
       def fill_holder(container)
         container.capacity.times { container.dock(Bike.new) }
@@ -47,14 +48,17 @@
       end
 
       it "should release multiple working bikes" do
-        holder.dock_all(bikes)
-        expect(holder.release_all_working_bikes.count).to eq(2)
+        holder.dock(bike)
+        holder.dock(bike)
+        holder.release_working_bikes(2)
+        expect(holder.bike_count).to eq(0)
       end
 
       it "should release multiple broken bikes" do
         bikes.each { |bike| bike.break }
         holder.dock_all(bikes)
-        expect(holder.release_all_broken_bikes.count).to eq(2)
+        holder.release_broken_bikes(2)
+        expect(holder.bike_count).to eq(0)
       end
 
       it "should not accept something that is can't be broken" do
@@ -83,6 +87,13 @@
       it "should not be able to release a working bike if empty" do
         expect(holder).to be_empty
         expect(holder.release_a_working_bike).to be_nil
+      end
+
+      it "should not be able to release more bikes than it has" do
+        expect(holder).to be_empty
+        holder.dock(bike)
+        receiver.dock_all(holder.release_working_bikes(2))
+        expect(receiver.bike_count).to eq(1)
       end
 
       it "should provide the list of available bikes" do

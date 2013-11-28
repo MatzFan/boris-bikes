@@ -9,11 +9,16 @@ class Garage
     @capacity = args[:capacity]
   end
 
+  def dock(bike)
+    super
+    fix_all
+  end
+
   def defaults
     {capacity: 100}
   end
 
-  def fix_all(bikes)
+  def fix_all
     bikes.each { |bike| bike.fix }
   end
 
