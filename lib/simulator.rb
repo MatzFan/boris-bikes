@@ -45,6 +45,11 @@ class Simulator
       user.go_to(another_station(user.location))
     end
     display
+    van_fix_bikes
+  end
+
+  def step2
+    van_fix_bikes
   end
 
   def van_fix_bikes
@@ -52,11 +57,13 @@ class Simulator
     van.go_to(previous_location)
     van.go_to garage
     van.go_to(previous_location)
+    puts
     puts "Van is at #{van.location.name}"
+    puts
   end
 
   def priority_location
-    Stations.all.inject(docking_stations.first) do |memo, station|
+    docking_stations.inject(docking_stations.first) do |memo, station|
       (station.broken_bikes.count > memo.broken_bikes.count) ? station : memo
     end
   end
